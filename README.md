@@ -6,4 +6,4 @@ Built with Astro and published to GitHub Pages whenever `main` changes.
 - Blog posts: Markdown files in `src/content/blog`
 - Projects: Markdown files in `src/content/projects`
 - Local preview: `npm install`, then `npm run dev`
-- Custom domain: set `site` and remove `base` in `astro.config.mjs`, then add `public/CNAME`
+- Domain: `site` in `astro.config.mjs` and Settings > Pages on GitHub. No `CNAME` file is needed with this workflow.
