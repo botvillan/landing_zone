@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+---
+<Base title="About">
+  <div class="wrap page prose">
+    <h1>About</h1>
+    <div style="margin-top:1.5rem">{site.about.map((p) => <p>{p}</p>)}</div>
+  </div>
+</Base>

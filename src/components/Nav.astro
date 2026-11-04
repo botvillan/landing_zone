@@ -1,0 +1,23 @@
+---
+import { site } from '../config';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = Astro.url.pathname;
+const items = [['About', 'about'], ['Projects', 'projects'], ['Blog', 'blog'], ['Contact', 'contact']];
+---
+<header>
+  <a class="brand" href={`${base}/`}>{site.name}</a>
+  <nav aria-label="Main">
+    {items.map(([label, slug]) => {
+      const href = `${base}/${slug}/`;
+      return <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>;
+    })}
+  </nav>
+</header>
+<style>
+  header { position: relative; z-index: 2; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.25rem 1.5rem; padding: 1rem clamp(1rem, 4vw, 2.5rem); background: var(--ink); border-bottom: 1px solid var(--line); }
+  .brand { font: 700 1.2rem var(--display); color: var(--text); text-decoration: none; }
+  nav { display: flex; gap: clamp(0.9rem, 3vw, 1.75rem); }
+  nav a { color: var(--muted); text-decoration: none; padding-block: 0.4rem; }
+  nav a:hover, nav a[aria-current] { color: var(--text); }
+  nav a[aria-current] { box-shadow: inset 0 -2px var(--amber); }
+</style>

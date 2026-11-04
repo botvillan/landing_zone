@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config';
+---
+<Base title="Contact">
+  <div class="wrap page">
+    <h1>Contact</h1>
+    <ul class="rows" style="margin-top:2rem">
+      {site.email && <li><a class="title" href={`mailto:${site.email}`}>{site.email}</a></li>}
+      {site.links.map((l) => <li><a class="title" href={l.href} rel="me noopener">{l.label}</a></li>)}
+    </ul>
+  </div>
+</Base>

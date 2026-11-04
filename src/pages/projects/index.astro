@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getProjects } from '../../scripts/posts';
+const projects = await getProjects();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Projects" description="Things I have built.">
+  <div class="wrap page">
+    <h1>Projects</h1>
+    <p class="lede">Things I have built.</p>
+    <ul class="rows">
+      {projects.map((p) => (
+        <li>
+          <a class="title" href={`${base}/projects/${p.id}/`}>{p.data.title}</a>
+          <p>{p.data.summary}</p>
+          <p class="meta">{p.data.stack.join(', ')}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

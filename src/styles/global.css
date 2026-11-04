@@ -1,0 +1,51 @@
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+  color-scheme: dark;
+  --ink: #10152a;
+  --raised: #1a2140;
+  --line: #333d66;
+  --text: #eceaf2;
+  --muted: #a9aec8;
+  --amber: #f5b84a;
+  --display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --body: 'IBM Plex Sans', system-ui, sans-serif;
+  --code: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --measure: 42rem;
+}
+* { box-sizing: border-box; }
+html { background: var(--ink); -webkit-text-size-adjust: 100%; }
+body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; background: var(--ink); color: var(--text); font: 400 1.0625rem/1.65 var(--body); }
+main { flex: 1; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; font-weight: 700; margin: 0; }
+h1 { font-size: clamp(2.25rem, 6vw, 3.5rem); letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; }
+a { color: var(--amber); text-underline-offset: 0.18em; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 4px; }
+img { max-width: 100%; height: auto; }
+.wrap { width: min(100% - 2rem, var(--measure)); margin-inline: auto; }
+.page { padding-block: clamp(2.5rem, 7vw, 5rem); }
+.lede { color: var(--muted); font-size: 1.15rem; margin: 0.75rem 0 2.5rem; }
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 1rem; top: 1rem; z-index: 10; background: var(--raised); padding: 0.5rem 0.75rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.rows { list-style: none; margin: 0; padding: 0; }
+.rows li { border-top: 1px solid var(--line); padding-block: 1.25rem; }
+.rows li:last-child { border-bottom: 1px solid var(--line); }
+.rows a.title { font: 600 1.25rem/1.25 var(--display); color: var(--text); text-decoration: none; }
+.rows a.title:hover { color: var(--amber); }
+.rows p { margin: 0.35rem 0 0; color: var(--muted); }
+.meta { color: var(--muted); font-size: 0.9rem; }
+
+.prose { max-width: var(--measure); }
+.prose h2 { margin: 2.25rem 0 0.5rem; }
+.prose h3 { margin: 1.75rem 0 0.5rem; font-size: 1.25rem; }
+.prose li { margin-block: 0.3rem; }
+.prose code { font: 0.9em var(--code); background: var(--raised); padding: 0.1em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+.prose pre { padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; line-height: 1.5; border: 1px solid var(--line); }
+.prose pre code { background: none; padding: 0; overflow-wrap: normal; }
+.prose blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 3px solid var(--amber); color: var(--muted); }

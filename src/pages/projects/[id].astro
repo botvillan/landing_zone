@@ -1,0 +1,19 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getProjects } from '../../scripts/posts';
+export async function getStaticPaths() {
+  return (await getProjects()).map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+const { project } = Astro.props;
+const { Content } = await render(project);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title={project.data.title} description={project.data.summary}>
+  <article class="wrap page prose">
+    <h1>{project.data.title}</h1>
+    <p class="meta">{project.data.stack.join(', ')}</p>
+    <Content />
+    <p style="margin-top:3rem"><a href={`${base}/projects/`}>Back to all projects</a></p>
+  </article>
+</Base>
