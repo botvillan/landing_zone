@@ -1,12 +1,10 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import remarkObsidian from './src/plugins/remark-obsidian.mjs';
 
+// Obsidian syntax (![[image.png]], [[links]]) is converted by scripts/obsidian-prep.mjs,
+// which the GitHub workflow runs before the build.
 export default defineConfig({
   site: 'https://samuelaravinth.online',
   integrations: [sitemap()],
-  markdown: {
-    remarkPlugins: [remarkObsidian],
-    shikiConfig: { theme: 'github-dark-dimmed' },
-  },
+  markdown: { shikiConfig: { theme: 'github-dark-dimmed' } },
 });

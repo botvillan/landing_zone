@@ -24,6 +24,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Convert Obsidian syntax
+        run: node scripts/obsidian-prep.mjs
       - name: Build
         run: |
           set -o pipefail
