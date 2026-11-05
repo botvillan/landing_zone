@@ -26,3 +26,11 @@ const items = [['About', 'about'], ['Projects', 'projects'], ['Blog', 'blog'], [
   nav a[aria-current] { color: var(--text); background: rgba(255, 255, 255, 0.08); }
   @media (max-width: 30rem) { nav a { padding-inline: 0.55rem; } }
 </style>
+<style>
+  @media (max-width: 40rem) {
+    .inner { padding-block: 0.9rem 0.6rem; }
+    .brand { font-size: 1.2rem; }
+    nav { justify-content: space-between; margin-inline: -0.55rem; width: calc(100% + 1.1rem); }
+    nav a { font-size: 1.05rem; padding: 0.55rem 0.7rem; }
+  }
+</style>
