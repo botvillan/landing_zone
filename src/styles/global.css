@@ -116,7 +116,7 @@ img { max-width: 100%; height: auto; }
 .prose blockquote { margin-inline: 0; padding: 1rem 1.25rem; border-radius: 12px; border: 1px solid rgba(142, 162, 255, 0.25); background: var(--accent-soft); color: var(--text); }
 .prose blockquote > :first-child { margin-top: 0; }
 .prose blockquote > :last-child { margin-bottom: 0; }
-.prose img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line); background: var(--raised); }
+.prose img { display: block; width: auto; max-width: 100%; height: auto; margin-inline: auto; border-radius: 14px; border: 1px solid var(--line); background: var(--raised); }
 .prose p:has(> img:only-child) { margin-block: 2.25rem; }
 @media (min-width: 52rem) { .prose p:has(> img:only-child) { margin-inline: -3rem; } }
 .prose p:has(> img:only-child) + p > em:only-child { display: block; margin-top: -1.25rem; text-align: center; font-size: 0.9rem; color: var(--faint); font-style: normal; }

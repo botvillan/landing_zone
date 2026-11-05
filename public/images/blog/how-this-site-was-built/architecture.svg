@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" font-family="Geist, 'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="acc" x1="0" x2="1"><stop offset="0" stop-color="#8ea2ff"/><stop offset="1" stop-color="#c4b5fd"/></linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.4" r="0.7"><stop offset="0" stop-color="#8ea2ff" stop-opacity="0.16"/><stop offset="1" stop-color="#0b0b12" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity="0.035"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8ea2ff"/></marker>
+    <style>
+      .box { fill: #12121a; stroke: #ffffff; stroke-opacity: 0.12; stroke-width: 1.5; }
+      .t { fill: #f4f4f5; font-size: 22px; font-weight: 600; }
+      .s { fill: #a1a1aa; font-size: 15px; }
+      .m { fill: #8ea2ff; font-size: 13px; font-family: 'Geist Mono', Consolas, ui-monospace, monospace; letter-spacing: 1.5px; }
+      .line { stroke: #8ea2ff; stroke-width: 2.5; fill: none; marker-end: url(#arr); }
+      .dash { stroke: #c4b5fd; stroke-width: 2; fill: none; stroke-dasharray: 6 7; marker-end: url(#arr); }
+    </style>
+  </defs>
+  <rect width="1200" height="640" fill="#0b0b12"/>
+  <rect width="1200" height="640" fill="url(#grid)"/>
+  <rect width="1200" height="640" fill="url(#glow)"/>
+
+  <text x="60" y="64" class="m">HOW A POST GETS FROM MY NOTES TO YOUR SCREEN</text>
+
+  <!-- Row 1 -->
+  <rect class="box" x="60" y="110" width="300" height="130" rx="18"/>
+  <circle cx="98" cy="150" r="12" fill="#c4b5fd"/>
+  <text x="122" y="157" class="t">Obsidian</text>
+  <text x="84" y="195" class="s">Markdown notes + images,</text>
+  <text x="84" y="218" class="s">synced into the repo</text>
+
+  <rect class="box" x="450" y="110" width="300" height="130" rx="18"/>
+  <circle cx="488" cy="150" r="12" fill="#f4f4f5"/>
+  <text x="512" y="157" class="t">GitHub repo</text>
+  <text x="474" y="195" class="s">landing_zone, branch main</text>
+  <text x="474" y="218" class="s">every push starts a build</text>
+
+  <rect class="box" x="840" y="110" width="300" height="130" rx="18"/>
+  <circle cx="878" cy="150" r="12" fill="#22d3ee"/>
+  <text x="902" y="157" class="t">GitHub Actions</text>
+  <text x="864" y="195" class="s">1. convert Obsidian syntax</text>
+  <text x="864" y="218" class="s">2. astro build (~1 min)</text>
+
+  <!-- Row 2 -->
+  <rect class="box" x="840" y="360" width="300" height="130" rx="18"/>
+  <circle cx="878" cy="400" r="12" fill="#4ade80"/>
+  <text x="902" y="407" class="t">GitHub Pages</text>
+  <text x="864" y="445" class="s">hosts the static files,</text>
+  <text x="864" y="468" class="s">free HTTPS certificate</text>
+
+  <rect class="box" x="450" y="360" width="300" height="130" rx="18"/>
+  <circle cx="488" cy="400" r="12" fill="#fbbf24"/>
+  <text x="512" y="407" class="t">Porkbun DNS</text>
+  <text x="474" y="445" class="s">4 A records pointing</text>
+  <text x="474" y="468" class="s">the domain at GitHub</text>
+
+  <rect x="60" y="360" width="300" height="130" rx="18" fill="url(#acc)" fill-opacity="0.12" stroke="url(#acc)" stroke-width="2"/>
+  <circle cx="98" cy="400" r="12" fill="url(#acc)"/>
+  <text x="122" y="407" class="t">You</text>
+  <text x="84" y="445" class="s">samuelaravinth.online</text>
+  <text x="84" y="468" class="s">static HTML, no server code</text>
+
+  <path class="line" d="M360 175 H440"/>
+  <path class="line" d="M750 175 H830"/>
+  <path class="line" d="M990 240 V350"/>
+  <path class="line" d="M840 425 H760"/>
+  <path class="line" d="M450 425 H370"/>
+
+  <!-- Claude Code -->
+  <rect x="300" y="545" width="600" height="58" rx="29" fill="#12121a" stroke="#c4b5fd" stroke-opacity="0.5" stroke-width="1.5"/>
+  <text x="600" y="580" text-anchor="middle" class="s"><tspan fill="#c4b5fd" font-weight="600">Claude Code</tspan> wrote the code, pushed it, and debugged the deploys</text>
+</svg>

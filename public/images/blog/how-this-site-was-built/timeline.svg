@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" width="1200" height="820" font-family="Geist, 'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="rail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f3f46"/><stop offset="0.22" stop-color="#8ea2ff"/><stop offset="1" stop-color="#c4b5fd"/></linearGradient>
+    <radialGradient id="glow" cx="0.3" cy="0.6" r="0.8"><stop offset="0" stop-color="#8ea2ff" stop-opacity="0.12"/><stop offset="1" stop-color="#0b0b12" stop-opacity="0"/></radialGradient>
+    <style>
+      .time { fill: #8ea2ff; font-size: 17px; font-family: 'Geist Mono', Consolas, ui-monospace, monospace; }
+      .old { fill: #71717a; }
+      .t { fill: #f4f4f5; font-size: 22px; font-weight: 600; }
+      .s { fill: #a1a1aa; font-size: 16px; }
+      .m { fill: #8ea2ff; font-size: 13px; font-family: 'Geist Mono', Consolas, ui-monospace, monospace; letter-spacing: 1.5px; }
+      .fail { fill: #f87171; font-size: 13px; font-family: 'Geist Mono', Consolas, ui-monospace, monospace; }
+    </style>
+  </defs>
+  <rect width="1200" height="820" fill="#0b0b12"/>
+  <rect width="1200" height="820" fill="url(#glow)"/>
+  <text x="60" y="64" class="m">THE BUILD, FROM GIT HISTORY (TIMES IN IST)</text>
+
+  <rect x="268" y="104" width="4" height="680" rx="2" fill="url(#rail)"/>
+
+  <g>
+    <text x="240" y="128" text-anchor="end" class="time old">Apr 2025</text>
+    <circle cx="270" cy="122" r="9" fill="#0b0b12" stroke="#71717a" stroke-width="3"/>
+    <text x="300" y="129" class="t">A hand-written HTML page</text>
+    <text x="300" y="154" class="s">13 commits in one late night, edited straight on GitHub</text>
+  </g>
+  <g>
+    <text x="240" y="210" text-anchor="end" class="time old">4 Nov, 22:15</text>
+    <circle cx="270" cy="204" r="9" fill="#0b0b12" stroke="#a1a1aa" stroke-width="3"/>
+    <text x="300" y="211" class="t">Rebuilt as an Astro portfolio and blog</text>
+    <text x="300" y="236" class="s">first Claude Code session, but the domain showed a parked page</text>
+  </g>
+  <g>
+    <text x="240" y="292" text-anchor="end" class="time">5 Nov, 13:48</text>
+    <circle cx="270" cy="286" r="9" fill="#8ea2ff"/>
+    <text x="300" y="293" class="t">"Site not found"</text>
+    <text x="300" y="318" class="s">new session: diagnose the 404 and the parked domain</text>
+  </g>
+  <g>
+    <text x="240" y="374" text-anchor="end" class="time">14:09</text>
+    <circle cx="270" cy="368" r="9" fill="#8ea2ff"/>
+    <text x="300" y="375" class="t">Live on samuelaravinth.online with HTTPS</text>
+    <text x="300" y="400" class="s">GitHub URL first (13:53), then the custom domain</text>
+  </g>
+  <g>
+    <text x="240" y="456" text-anchor="end" class="time">14:17</text>
+    <circle cx="270" cy="450" r="9" fill="#9aa6ff"/>
+    <text x="300" y="457" class="t">Redesign: Geist font, cards, post layout</text>
+    <text x="300" y="482" class="s">bigger type for phones at 14:22</text>
+  </g>
+  <g>
+    <text x="240" y="538" text-anchor="end" class="time">15:06</text>
+    <circle cx="270" cy="532" r="9" fill="#a7aafd"/>
+    <text x="300" y="539" class="t">Rebrand, thumbnails, Obsidian images</text>
+    <text x="300" y="564" class="fail">BUILD FAILED  ·  Astro 7 changed its Markdown engine</text>
+  </g>
+  <g>
+    <text x="240" y="620" text-anchor="end" class="time">15:09</text>
+    <circle cx="270" cy="614" r="9" fill="#b3aefd"/>
+    <text x="300" y="621" class="t">Fixed with a pre-build script, back online</text>
+    <text x="300" y="646" class="s">3 minutes from failure to fix, once the error was visible</text>
+  </g>
+  <g>
+    <text x="240" y="702" text-anchor="end" class="time">16:29</text>
+    <circle cx="270" cy="696" r="9" fill="#bdb3fd"/>
+    <text x="300" y="703" class="t">Fluid background, one-line mobile nav</text>
+    <text x="300" y="728" class="s">and softer buttons that do not glare on dark</text>
+  </g>
+  <g>
+    <text x="240" y="784" text-anchor="end" class="time">16:45</text>
+    <circle cx="270" cy="778" r="11" fill="#c4b5fd"/>
+    <circle cx="270" cy="778" r="20" fill="none" stroke="#c4b5fd" stroke-opacity="0.4" stroke-width="2"/>
+    <text x="300" y="785" class="t">This post</text>
+  </g>
+</svg>
