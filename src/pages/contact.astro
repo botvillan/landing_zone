@@ -4,8 +4,10 @@ import { site } from '../config';
 ---
 <Base title="Contact">
   <div class="wrap page">
-    <h1>Contact</h1>
-    <ul class="rows" style="margin-top:2rem">
+    <p class="eyebrow">Contact</p>
+    <h1>Say hello.</h1>
+    <p class="lede">The best ways to reach me.</p>
+    <ul class="rows">
       {site.email && <li><a class="title" href={`mailto:${site.email}`}>{site.email}</a></li>}
       {site.links.map((l) => <li><a class="title" href={l.href} rel="me noopener">{l.label}</a></li>)}
     </ul>

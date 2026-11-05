@@ -1,20 +1,50 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { getPosts } from '../../scripts/posts';
+import { getPosts, readingTime, formatDate } from '../../scripts/posts';
 export async function getStaticPaths() {
-  return (await getPosts()).map((post) => ({ params: { id: post.id }, props: { post } }));
+  const posts = await getPosts();
+  return posts.map((post, i) => ({ params: { id: post.id }, props: { post, newer: posts[i - 1], older: posts[i + 1] } }));
 }
-const { post } = Astro.props;
+const { post, newer, older } = Astro.props;
 const { Content } = await render(post);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const date = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(post.data.date);
 ---
 <Base title={post.data.title} description={post.data.description}>
-  <article class="wrap page prose">
-    <h1>{post.data.title}</h1>
-    <p class="meta"><time datetime={post.data.date.toISOString()}>{date}</time></p>
-    <Content />
-    <p style="margin-top:3rem"><a href={`${base}/blog/`}>Back to all posts</a></p>
+  <div class="progress" aria-hidden="true"></div>
+  <article class="wrap page">
+    <a class="back" href={`${base}/blog/`}>← All posts</a>
+    <header class="head">
+      <p class="meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, 'long')}</time> · {readingTime(post.body)}</p>
+      <h1>{post.data.title}</h1>
+      <p class="lede">{post.data.description}</p>
+      {post.data.tags.length > 0 && <ul class="tags">{post.data.tags.map((t) => <li class="tag">{t}</li>)}</ul>}
+    </header>
+    <div class="prose"><Content /></div>
+    {(newer || older) && (
+      <nav class="pager" aria-label="More posts">
+        {older ? <a href={`${base}/blog/${older.id}/`}><span class="meta">← Older</span>{older.data.title}</a> : <span />}
+        {newer ? <a class="next" href={`${base}/blog/${newer.id}/`}><span class="meta">Newer →</span>{newer.data.title}</a> : <span />}
+      </nav>
+    )}
   </article>
+  <style>
+    .progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 30; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    @supports (animation-timeline: scroll()) {
+      .progress { animation: grow linear both; animation-timeline: scroll(root); }
+      @keyframes grow { to { transform: scaleX(1); } }
+    }
+    @media (prefers-reduced-motion: reduce) { .progress { display: none; } }
+    .back { display: inline-block; margin-bottom: 2.5rem; font: 400 0.85rem var(--code); color: var(--muted); text-decoration: none; }
+    .back:hover { color: var(--accent); }
+    .head { padding-bottom: 2.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+    .head .meta { margin: 0 0 1.25rem; }
+    .head h1 { font-size: clamp(2.25rem, 6vw, 3.6rem); }
+    .head .lede { margin: 1.25rem 0 1.5rem; }
+    .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid var(--line); }
+    .pager a { display: flex; flex-direction: column; gap: 0.4rem; padding: 1.25rem; border-radius: var(--radius); border: 1px solid var(--line); color: var(--text); font-weight: 500; letter-spacing: -0.01em; line-height: 1.35; text-decoration: none; transition: border-color 0.2s; }
+    .pager a:hover { border-color: rgba(142, 162, 255, 0.4); }
+    .pager .next { text-align: right; }
+    @media (max-width: 36rem) { .pager { grid-template-columns: 1fr; } .pager .next { text-align: left; } }
+  </style>
 </Base>

@@ -11,9 +11,12 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#10152a" />
+    <meta name="theme-color" content="#09090b" />
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400..600&display=swap" />
     <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
     <link rel="alternate" type="application/rss+xml" title={site.name} href={`${base}/rss.xml`} />
     <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
@@ -23,11 +26,20 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
     <Nav />
     <main id="main"><slot /></main>
     <footer>
-      <span>© {new Date().getFullYear()} {site.name}</span>
-      <a href={`${base}/rss.xml`}>RSS feed</a>
+      <div class="inner">
+        <span>© {new Date().getFullYear()} {site.name}</span>
+        <nav aria-label="Footer">
+          {site.links.map((l) => <a href={l.href} rel="me noopener">{l.label}</a>)}
+          <a href={`${base}/rss.xml`}>RSS</a>
+        </nav>
+      </div>
     </footer>
     <style>
-      footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 1rem; padding: 1.25rem clamp(1rem, 4vw, 2.5rem); background: var(--ink); border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+      footer { position: relative; z-index: 2; border-top: 1px solid var(--line); background: var(--ink); color: var(--faint); font: 400 0.8125rem/1.5 var(--code); }
+      .inner { width: min(100% - 2rem, var(--wide)); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; padding-block: 2rem; }
+      footer nav { display: flex; gap: 1.25rem; }
+      footer a { color: var(--muted); text-decoration: none; }
+      footer a:hover { color: var(--text); }
     </style>
   </body>
 </html>

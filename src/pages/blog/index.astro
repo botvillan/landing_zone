@@ -5,9 +5,10 @@ import { getPosts } from '../../scripts/posts';
 const posts = await getPosts();
 ---
 <Base title="Blog" description="Technical notes and build logs.">
-  <div class="wrap page">
+  <div class="wrap wide page">
+    <p class="eyebrow">Writing</p>
     <h1>Blog</h1>
-    <p class="lede">Technical notes and build logs.</p>
-    <PostList posts={posts} />
+    <p class="lede">Technical notes, build logs and things I learned the hard way.</p>
+    {posts.length > 0 ? <PostList posts={posts} feature /> : <p class="meta">No posts yet.</p>}
   </div>
 </Base>

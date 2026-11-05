@@ -39,10 +39,10 @@ if (canvas) {
     const t = still.matches ? 1 : Math.min(1, (now - born) / 2000);
     ctx.lineWidth = 1;
     for (let i = 0; i < dots.length; i++) {
-      for (let j = i + 1; j < dots.length; j++) line(dots[i], dots[j], LINK * t, 0.42, '140,165,235');
-      line(dots[i], pointer, 190, 0.8, '245,184,74');
+      for (let j = i + 1; j < dots.length; j++) line(dots[i], dots[j], LINK * t, 0.28, '142,162,255');
+      line(dots[i], pointer, 190, 0.8, '196,181,253');
     }
-    ctx.fillStyle = 'rgba(190,205,250,0.85)';
+    ctx.fillStyle = 'rgba(200,210,255,0.7)';
     for (const d of dots) { ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 7); ctx.fill(); }
   }
   const tick = (now: number) => {
