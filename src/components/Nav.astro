@@ -2,11 +2,15 @@
 import { site } from '../config';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const path = Astro.url.pathname;
+const home = path === `${base}/` || path === base || path === '/';
 const items = [['About', 'about'], ['Projects', 'projects'], ['Blog', 'blog'], ['Contact', 'contact']];
 ---
 <header>
   <div class="inner">
-    <a class="brand" href={`${base}/`}><span class="dot" aria-hidden="true"></span>{site.name}</a>
+    <a class="brand" href={`${base}/`} aria-label={`${site.name}, home`}>
+      <span class="mark" aria-hidden="true">{site.initials}</span>
+      {!home && <span class="name" aria-hidden="true">{site.name}</span>}
+    </a>
     <nav aria-label="Main">
       {items.map(([label, slug]) => {
         const href = `${base}/${slug}/`;
@@ -17,19 +21,20 @@ const items = [['About', 'about'], ['Projects', 'projects'], ['Blog', 'blog'], [
 </header>
 <style>
   header { position: sticky; top: 0; z-index: 20; background: rgba(9, 9, 11, 0.7); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--line); }
-  .inner { width: min(100% - 2rem, var(--wide)); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 1.5rem; padding-block: 0.85rem; }
-  .brand { display: inline-flex; align-items: center; gap: 0.6rem; font: 600 1.05rem var(--display); letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
-  .dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 12px rgba(142, 162, 255, 0.7); }
+  .inner { width: min(100% - 2rem, var(--wide)); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 1.5rem; padding-block: 0.75rem; }
+  .brand { display: inline-flex; align-items: center; gap: 0.7rem; color: var(--text); text-decoration: none; }
+  .mark { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 10px; font: 700 0.9rem/1 var(--display); letter-spacing: -0.04em; color: var(--ink); background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset, 0 6px 20px -6px rgba(142, 162, 255, 0.7); transition: transform 0.25s, box-shadow 0.25s; }
+  .brand:hover .mark { transform: rotate(-6deg) scale(1.05); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 8px 26px -6px rgba(142, 162, 255, 0.9); }
+  .name { font: 600 1rem var(--display); letter-spacing: -0.02em; }
   nav { display: flex; gap: 0.25rem; }
   nav a { color: var(--muted); text-decoration: none; font-size: 0.925rem; padding: 0.4rem 0.8rem; border-radius: 999px; transition: color 0.2s, background 0.2s; }
   nav a:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
   nav a[aria-current] { color: var(--text); background: rgba(255, 255, 255, 0.08); }
-  @media (max-width: 30rem) { nav a { padding-inline: 0.55rem; } }
-</style>
-<style>
+  @media (prefers-reduced-motion: reduce) { .mark, .brand:hover .mark { transition: none; transform: none; } }
   @media (max-width: 40rem) {
-    .inner { padding-block: 0.9rem 0.6rem; }
-    .brand { font-size: 1.2rem; }
+    .inner { padding-block: 0.8rem 0.55rem; }
+    .mark { width: 2.5rem; height: 2.5rem; font-size: 1rem; }
+    .name { font-size: 1.15rem; }
     nav { justify-content: space-between; margin-inline: -0.55rem; width: calc(100% + 1.1rem); }
     nav a { font-size: 1.05rem; padding: 0.55rem 0.7rem; }
   }

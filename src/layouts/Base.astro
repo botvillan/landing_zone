@@ -4,7 +4,10 @@ import Nav from '../components/Nav.astro';
 import { site } from '../config';
 const { title, description = site.description } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const fullTitle = title ? `${title} | ${site.name}` : site.name;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Data Engineer, Automation & Homelab`;
+const quotes = site.quotes ?? [];
+let h = 0; for (const c of Astro.url.pathname) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+const quote = quotes.length ? quotes[h % quotes.length] : '';
 ---
 <!doctype html>
 <html lang="en">
@@ -13,6 +16,8 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#09090b" />
     <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
     <title>{fullTitle}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,6 +31,7 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
     <Nav />
     <main id="main"><slot /></main>
     <footer>
+      {quote && <p class="quote">“{quote}”</p>}
       <div class="inner">
         <span>© {new Date().getFullYear()} {site.name}</span>
         <nav aria-label="Footer">
@@ -36,6 +42,7 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
     </footer>
     <style>
       footer { position: relative; z-index: 2; border-top: 1px solid var(--line); background: var(--ink); color: var(--faint); font: 400 0.8125rem/1.5 var(--code); }
+      .quote { width: min(100% - 2rem, var(--wide)); margin: 0 auto; padding: 2.5rem 0 0; font: 500 clamp(1.15rem, 2.4vw, 1.5rem)/1.35 var(--display); letter-spacing: -0.02em; color: var(--text); opacity: 0.85; }
       .inner { width: min(100% - 2rem, var(--wide)); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; padding-block: 2rem; }
       footer nav { display: flex; gap: 1.25rem; }
       footer a { color: var(--muted); text-decoration: none; }

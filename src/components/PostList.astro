@@ -1,4 +1,5 @@
 ---
+import Cover from './Cover.astro';
 import { readingTime, formatDate } from '../scripts/posts';
 const { posts, feature = false } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -9,13 +10,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     return (
       <li style={featured ? 'grid-column: 1 / -1' : undefined}>
         <article class={featured ? 'card featured' : 'card'}>
-          {featured && <span class="badge">Latest</span>}
-          <p class="meta"><time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time> · {readingTime(p.body)}</p>
-          <h3><a href={`${base}/blog/${p.id}/`}>{p.data.title}</a></h3>
-          <p class="desc">{p.data.description}</p>
-          <div class="foot">
-            {p.data.tags.length > 0 ? <ul class="tags">{p.data.tags.map((t) => <li class="tag">{t}</li>)}</ul> : <span />}
-            <span class="arrow" aria-hidden="true">→</span>
+          <Cover entry={p} eager={featured} sizes={featured ? '(max-width: 52rem) 100vw, 640px' : undefined} />
+          <div class="body">
+            {featured && <span class="badge">Latest</span>}
+            <p class="meta"><time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time> · {readingTime(p.body)}</p>
+            <h3><a href={`${base}/blog/${p.id}/`}>{p.data.title}</a></h3>
+            {p.data.description && <p class="desc">{p.data.description}</p>}
+            <div class="foot">
+              {p.data.tags.length > 0 ? <ul class="tags">{p.data.tags.slice(0, 4).map((t) => <li class="tag">{t}</li>)}</ul> : <span />}
+              <span class="arrow" aria-hidden="true">→</span>
+            </div>
           </div>
         </article>
       </li>

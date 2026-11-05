@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="l" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#8ea2ff"/><stop offset="1" stop-color="#c4b5fd"/></linearGradient>
+    <radialGradient id="r" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#8ea2ff" stop-opacity="0.18"/><stop offset="1" stop-color="#0f0f17" stop-opacity="0"/></radialGradient>
+    <pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#fff" stroke-opacity="0.04"/></pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#0f0f17"/>
+  <rect width="1200" height="675" fill="url(#p)"/>
+  <rect width="1200" height="675" fill="url(#r)"/>
+  <g transform="translate(600 300)" fill="none" stroke="url(#l)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="-110" y="-80" width="220" height="160" rx="22"/>
+    <circle cx="-45" cy="-25" r="18"/>
+    <path d="M-110 50 L-40 -5 L20 45 L55 15 L110 60"/>
+  </g>
+  <text x="600" y="460" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="28" fill="#a1a1aa">image not found</text>
+  <text x="600" y="505" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="20" fill="#71717a">check the file is in the synced folder</text>
+</svg>

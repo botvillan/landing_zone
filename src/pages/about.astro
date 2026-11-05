@@ -2,10 +2,10 @@
 import Base from '../layouts/Base.astro';
 import { site } from '../config';
 ---
-<Base title="About">
+<Base title="About" description="Samuel Aravinth: data engineer, automation addict and homelab tinkerer.">
   <div class="wrap page">
     <p class="eyebrow">About</p>
-    <h1>Hi, I'm {site.name}.</h1>
+    <h1>Data engineer by day, homelabber by night.</h1>
     <div class="prose" style="margin-top:2rem">{site.about.map((p) => <p>{p}</p>)}</div>
     {site.skills.length > 0 && <ul class="tags" style="margin-top:2.5rem">{site.skills.map((s) => <li class="tag">{s}</li>)}</ul>}
   </div>

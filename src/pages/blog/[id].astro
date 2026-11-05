@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Cover from '../../components/Cover.astro';
 import { getPosts, readingTime, formatDate } from '../../scripts/posts';
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -17,9 +18,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <header class="head">
       <p class="meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, 'long')}</time> · {readingTime(post.body)}</p>
       <h1>{post.data.title}</h1>
-      <p class="lede">{post.data.description}</p>
+      {post.data.description && <p class="lede">{post.data.description}</p>}
       {post.data.tags.length > 0 && <ul class="tags">{post.data.tags.map((t) => <li class="tag">{t}</li>)}</ul>}
     </header>
+    <Cover entry={post} eager label={false} class="hero-cover" sizes="(max-width: 52rem) 100vw, 900px" />
     <div class="prose"><Content /></div>
     {(newer || older) && (
       <nav class="pager" aria-label="More posts">
@@ -37,7 +39,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     @media (prefers-reduced-motion: reduce) { .progress { display: none; } }
     .back { display: inline-block; margin-bottom: 2.5rem; font: 400 0.85rem var(--code); color: var(--muted); text-decoration: none; }
     .back:hover { color: var(--accent); }
-    .head { padding-bottom: 2.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+    .head { margin-bottom: 2.5rem; }
+    .hero-cover { margin: 0 0 3rem; border-radius: 18px; box-shadow: 0 30px 80px -40px rgba(142, 162, 255, 0.5); }
+    @media (min-width: 52rem) { .hero-cover { margin-inline: -3rem; } }
     .head .meta { margin: 0 0 1.25rem; }
     .head h1 { font-size: clamp(2.25rem, 6vw, 3.6rem); }
     .head .lede { margin: 1.25rem 0 1.5rem; }

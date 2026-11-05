@@ -13,7 +13,8 @@ const posts = (await getPosts()).slice(0, 3);
       {site.photo ? <img src={`${base}/${site.photo}`} alt="" width="160" height="160" /> : <span aria-hidden="true">{site.initials}</span>}
     </div>
     <p class="pill"><span class="live" aria-hidden="true"></span>{site.skills.join(' · ')}</p>
-    <h1>Hi, I'm <span class="grad">{site.name}</span></h1>
+    <p class="hi">Hi, I'm</p>
+    <h1><span class="grad">{site.name}</span></h1>
     <p class="role">
       <span class="visually-hidden">{site.phrases.join(', ')}</span>
       <span aria-hidden="true"><span data-phrases={JSON.stringify(site.phrases)}>{site.phrases[0]}</span><span class="caret"></span></span>
@@ -22,6 +23,7 @@ const posts = (await getPosts()).slice(0, 3);
       <a class="btn primary" href={`${base}/blog/`}>Read the blog <span aria-hidden="true">→</span></a>
       <a class="btn" href={`${base}/projects/`}>See projects</a>
     </div>
+    {site.motto && <p class="motto"><span aria-hidden="true">“</span>{site.motto}<span aria-hidden="true">”</span></p>}
   </section>
   {posts.length > 0 && (
     <section class="latest">
@@ -49,7 +51,10 @@ const posts = (await getPosts()).slice(0, 3);
     .avatar span { font: 600 2.5rem var(--display); letter-spacing: -0.04em; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .pill { display: inline-flex; align-items: center; gap: 0.6rem; margin: 0 0 1.75rem; padding: 0.45rem 0.9rem; border-radius: 999px; border: 1px solid var(--line-strong); background: rgba(9, 9, 11, 0.6); backdrop-filter: blur(8px); font: 400 0.8rem/1 var(--code); color: var(--muted); }
     .live { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #4ade80; box-shadow: 0 0 10px #4ade80; }
-    .hero h1 { font-size: clamp(2.75rem, 8vw, 5.5rem); letter-spacing: -0.05em; line-height: 1.02; }
+    .hi { margin: 0 0 0.5rem; font: 400 clamp(1rem, 2vw, 1.2rem)/1 var(--code); color: var(--muted); }
+    .hero h1 { font-size: clamp(2.75rem, 8.5vw, 6rem); letter-spacing: -0.055em; line-height: 0.98; }
+    .motto { margin: 2.75rem 0 0; max-width: 30rem; font-size: clamp(1rem, 1.8vw, 1.1rem); font-style: italic; color: var(--muted); padding: 0.6rem 1.1rem; border-left: 2px solid var(--accent); text-align: left; background: rgba(9, 9, 11, 0.5); backdrop-filter: blur(6px); border-radius: 0 10px 10px 0; }
+    .motto span { color: var(--accent); font-style: normal; }
     .grad { background: linear-gradient(120deg, #fff 10%, var(--accent) 55%, var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .role { font: 400 clamp(1.15rem, 2.6vw, 1.5rem)/1.3 var(--code); color: var(--muted); margin: 1.25rem 0 2.5rem; min-height: 1.3em; }
     .caret { display: inline-block; width: 0.55em; height: 1.05em; margin-left: 4px; vertical-align: -0.15em; background: var(--accent); opacity: 0.8; animation: blink 1.1s steps(1) infinite; }
@@ -69,7 +74,9 @@ const posts = (await getPosts()).slice(0, 3);
       .avatar { width: 8.5rem; height: 8.5rem; }
       .avatar span { font-size: 2.9rem; }
       .pill { font-size: 0.875rem; padding: 0.55rem 1rem; }
-      .hero h1 { font-size: clamp(3.25rem, 15vw, 4.5rem); }
+      .hero h1 { font-size: clamp(3rem, 14vw, 4.25rem); }
+      .hi { font-size: 1.1rem; }
+      .motto { font-size: 1.05rem; margin-top: 2.25rem; }
       .role { font-size: 1.35rem; }
       .actions { flex-direction: column; width: 100%; max-width: 22rem; }
       .btn { justify-content: center; font-size: 1.05rem; padding: 1rem 1.5rem; }

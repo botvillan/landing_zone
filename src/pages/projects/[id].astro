@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Cover from '../../components/Cover.astro';
 import { getProjects } from '../../scripts/posts';
 export async function getStaticPaths() {
   return (await getProjects()).map((project) => ({ params: { id: project.id }, props: { project } }));
@@ -15,15 +16,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <header class="head">
       <p class="eyebrow">Project</p>
       <h1>{project.data.title}</h1>
-      <p class="lede">{project.data.summary}</p>
+      {project.data.summary && <p class="lede">{project.data.summary}</p>}
       {project.data.stack.length > 0 && <ul class="tags">{project.data.stack.map((t) => <li class="tag">{t}</li>)}</ul>}
     </header>
+    <Cover entry={project} eager label={false} class="hero-cover" sizes="(max-width: 52rem) 100vw, 900px" />
     <div class="prose"><Content /></div>
   </article>
   <style>
     .back { display: inline-block; margin-bottom: 2.5rem; font: 400 0.85rem var(--code); color: var(--muted); text-decoration: none; }
     .back:hover { color: var(--accent); }
-    .head { padding-bottom: 2.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+    .head { margin-bottom: 2.5rem; }
+    .hero-cover { margin: 0 0 3rem; border-radius: 18px; box-shadow: 0 30px 80px -40px rgba(142, 162, 255, 0.5); }
+    @media (min-width: 52rem) { .hero-cover { margin-inline: -3rem; } }
     .head h1 { font-size: clamp(2.25rem, 6vw, 3.6rem); }
     .head .lede { margin: 1.25rem 0 1.5rem; }
   </style>
