@@ -24,7 +24,15 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - name: Build
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee build.log
+      - name: Show build errors
+        if: failure()
+        run: |
+          msg=$(tail -n 60 build.log | sed -e 's/\x1b\[[0-9;]*m//g' | tr -d '\r' | sed -e 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+          echo "::error title=Build failed::$msg"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
