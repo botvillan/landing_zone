@@ -32,10 +32,13 @@ const items = [['About', 'about'], ['Projects', 'projects'], ['Blog', 'blog'], [
   nav a[aria-current] { color: var(--text); background: rgba(255, 255, 255, 0.08); }
   @media (prefers-reduced-motion: reduce) { .mark, .brand:hover .mark { transition: none; transform: none; } }
   @media (max-width: 40rem) {
-    .inner { padding-block: 0.8rem 0.55rem; }
-    .mark { width: 2.5rem; height: 2.5rem; font-size: 1rem; }
-    .name { font-size: 1.15rem; }
-    nav { justify-content: space-between; margin-inline: -0.55rem; width: calc(100% + 1.1rem); }
-    nav a { font-size: 1.05rem; padding: 0.55rem 0.7rem; }
+    .inner { flex-wrap: nowrap; gap: 0.75rem; padding-block: 0.65rem; }
+    .mark { width: 2.4rem; height: 2.4rem; font-size: 0.95rem; flex-shrink: 0; }
+    .name { display: none; }
+    nav { gap: 0; }
+    nav a { font-size: 0.98rem; padding: 0.5rem 0.6rem; }
+  }
+  @media (max-width: 22.5rem) {
+    nav a { font-size: 0.9rem; padding: 0.45rem 0.42rem; }
   }
 </style>
