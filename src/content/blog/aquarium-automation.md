@@ -1,6 +1,6 @@
 ---
 title: "Feedback Loop: my aquarium automation that learns, forecasts and tattles"
-description: How I turned a NodeMCU, a laser distance sensor and a hobby servo into an aquarium feeder that knows how much food is left, predicts when it runs out, and notices when a feed jams.
+description: How I turned an ESP32, a laser distance sensor and a hobby servo into an aquarium feeder that keeps feeding with the Wi-Fi down, knows how much food is left, predicts when it runs out, and notices when a feed jams.
 date: 2026-11-09
 tags: [Homelab, Automation, ESPHome, Home Assistant]
 cover: "[[aquarium-automation-cover.jpg]]"
@@ -12,11 +12,11 @@ A shop-bought fish feeder is a timer with a drum on it. It turns when the clock 
 
 > **The short version**
 >
-> One NodeMCU, two sensors, one servo. It measures the food level to the percent, learns how much each feed uses and how often I feed, forecasts the days left, and flags a jam after three feeds that didn't drop food. Everything survives a power cut.
+> One ESP32, two sensors, one servo. It feeds on its own schedule even when the Wi-Fi is down, measures the food level to the percent, learns how much each feed uses and how often I feed, forecasts the days left, and flags a jam after three feeds that didn't drop food. Everything survives a power cut.
 
 ## The hardware
 
-The whole thing is three parts hanging off a NodeMCU V2, the cheap ESP8266 board with Wi-Fi built in:
+The whole thing is three parts hanging off an ESP32 dev board, which has Wi-Fi built in and plenty of memory for the learning bits:
 
 - **VL53L0X time-of-flight sensor.** A tiny laser rangefinder on I2C that looks down into the hopper and measures the distance to the top of the food.
 - **DS18B20 probe.** A waterproof 1-Wire temperature sensor that sits in the tank.
@@ -24,13 +24,13 @@ The whole thing is three parts hanging off a NodeMCU V2, the cheap ESP8266 board
 
 ![How the feeder is wired](/images/blog/aquarium-automation/system.svg)
 
-*Sensors in on the left, servo and Home Assistant on the right. All the logic lives on the board.*
+*Sensors in on the left, servo and Home Assistant on the right. All the logic, including the feeding schedule, lives on the board.*
 
 | Device | Bus | Pin | Settings |
 | --- | --- | --- | --- |
-| VL53L0X distance sensor | I2C | D2 (SDA), D1 (SCL) | address 0x29, 100 kHz, read every 500 ms |
-| DS18B20 water probe | 1-Wire | D5 | internal pull-up, read every 10 s |
-| Servo (feeder) | PWM | D7 | 50 Hz, 0.5–2.5 ms pulse |
+| VL53L0X distance sensor | I2C | GPIO4 (SDA), GPIO5 (SCL) | address 0x29, 100 kHz, read every 500 ms |
+| DS18B20 water probe | 1-Wire | GPIO14 | internal pull-up, read every 10 s |
+| Servo (feeder) | PWM | GPIO13 | 50 Hz, 0.5–2.5 ms pulse |
 
 The firmware is ESPHome (the device is called `ultra-clear`, after the tank), talking to Home Assistant over its encrypted API and updated over the air. If the Wi-Fi ever disappears, it falls back to its own hotspot with a captive portal so I can still get in.
 
@@ -52,13 +52,13 @@ Pellets don't make a flat surface, and a laser bouncing off a pile of them is no
 
 ## What a feed actually does
 
-Home Assistant decides *when* to feed. The board decides *how*, and it keeps score:
+The board keeps its own feeding schedule, so a dead router or a Home Assistant reboot never skips a meal. Home Assistant is for extra feeds, history and alerts. Either way, the board decides *how* to feed, and it keeps score:
 
 ![One feed, step by step](/images/blog/aquarium-automation/feed-loop.svg)
 
 *Each step lights up in turn, ending with the jam check 12 minutes later. It's armed before the servo moves, so a feed that drops nothing gets caught.*
 
-1. **Triggered.** Home Assistant presses the *Servo Feed Loop* button.
+1. **Triggered.** The on-board schedule fires, or I press *Servo Feed Loop* in Home Assistant.
 2. **Arm the jam check.** The board notes the current level and how much this feed *should* use.
 3. **Rock the hopper.** The servo swings between −100 and −60, 400 ms each way, for the set *Feed Loop Count* (1–20, default 3). More cycles, bigger portion.
 4. **Detach the servo.** Cutting the signal stops the buzzing and keeps it cool while it rests.
@@ -94,7 +94,7 @@ Refills are spotted automatically: a jump of 10 % or more resets the statistics 
 
 ## Guessing the next feed
 
-Home Assistant runs the schedule, but the feeder works out what that schedule *is* from the feeds it sees, so it can show a *Next Feed* time without being told.
+The schedule I set is only half the story: I also feed by hand now and then. So the feeder works out the pattern I *actually* follow from the feeds it sees, and shows a *Next Feed* time from that.
 
 ![Learning the feeding times](/images/blog/aquarium-automation/schedule.svg)
 
@@ -130,9 +130,9 @@ Statistics, feed history and the loop count are written to flash, at most once e
 
 ![Shop-bought timer feeder vs Feedback Loop](/images/blog/aquarium-automation/compare.svg)
 
-*Not a clean sweep: the shop feeder still wins when the Wi-Fi is down.*
+*Even with the Wi-Fi down, it keeps up with the shop feeder. The only thing the shop feeder wins on is setup.*
 
-The honest summary: a timer feeder **does one thing** and does it without Wi-Fi. Feedback Loop **knows things**: how much food is left, how much each feed uses, when it will run out, when a feed failed, and what the water temperature is. The price is soldering, YAML and an afternoon of calibration.
+The honest summary: a timer feeder **does one thing**. Feedback Loop does that same thing without needing Wi-Fi, and it also **knows things**: how much food is left, how much each feed uses, when it will run out, when a feed failed, and what the water temperature is. The price is soldering, YAML and an afternoon of calibration.
 
 ## So, is it AI?
 
@@ -149,8 +149,7 @@ All of it runs on the board itself, in a few kilobytes of RAM, with no internet 
 
 Being honest about the rough edges:
 
-- **Feeding depends on Home Assistant.** The board has no schedule of its own, so if Home Assistant or the Wi-Fi is down, no feed runs.
-- **No clock, no log.** If Home Assistant time hasn't synced yet, a feed still runs but is missing from the history.
+- **No clock, no log.** If the clock hasn't synced yet after a reboot, a feed still runs but is missing from the history.
 - **Reboots reset the 24-hour anomaly timer and the jam counter.** They aren't saved to flash yet.
 - **A planned fasting day raises Anomaly,** because the level doesn't drop for 24 hours.
 - **An uneven pellet surface** still nudges the laser reading. Smoothing helps, but doesn't fix it.
@@ -159,10 +158,10 @@ Being honest about the rough edges:
 
 ## What's next
 
-**Phase 1, firmware only.** A backup feeding schedule on the board itself, so the fish eat even when Home Assistant doesn't. A "fasting day" switch. Save the anomaly and jam state to flash. Move secrets out of the YAML. Phone alerts for Feed Jam, Tank Empty, fewer than 2 days left, and water temperature out of range.
+**Phase 1, firmware only.** A "fasting day" switch. Save the anomaly and jam state to flash. Move secrets out of the YAML. Phone alerts for Feed Jam, Tank Empty, fewer than 2 days left, and water temperature out of range.
 
 **Phase 2, cheap hardware.** A proper 4.7 kΩ pull-up for the temperature probe. A relay for the heater, fan or lights. A water-level sensor for evaporation and a leak sensor under the tank.
 
-**Phase 3, the fun stuff.** Move to an ESP32 for more pins and memory. pH and TDS sensors for water quality. A load cell under the hopper to weigh the food instead of measuring it. A camera to confirm every feed. And months of history in Grafana, so I can finally prove which fish is the greedy one.
+**Phase 3, the fun stuff.** pH and TDS sensors for water quality. A load cell under the hopper to weigh the food instead of measuring it. A camera to confirm every feed. And months of history in Grafana, so I can finally prove which fish is the greedy one.
 
 If I have to do it twice, I automate it. Feeding fish five times a day definitely counts.
