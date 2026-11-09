@@ -22,7 +22,7 @@ The whole thing is three parts hanging off an ESP32 dev board, which has Wi-Fi b
 - **DS18B20 probe.** A waterproof 1-Wire temperature sensor that sits in the tank.
 - **A hobby servo.** It rocks the hopper back and forth to shake a portion of food out.
 
-![How the feeder is wired](/images/blog/aquarium-automation/system.svg)
+![How the feeder is wired](/images/blog/aquarium-automation/system.svg?v=3)
 
 *Sensors in on the left, servo and Home Assistant on the right. All the logic, including the feeding schedule, lives on the board.*
 
@@ -42,7 +42,7 @@ This is the bit that changes everything. The sensor sits at the top of the hoppe
 Tank Level % = (115 − distance) ÷ 45 × 100     (clamped to 0–100)
 ```
 
-![Inside the hopper](/images/blog/aquarium-automation/hopper.svg)
+![Inside the hopper](/images/blog/aquarium-automation/hopper.svg?v=3)
 
 *Live: the laser pings the pellets every 500 ms, the servo rocks out a portion, and the level and the reading drop with each feed. One feed is exaggerated here so you can see it.*
 
@@ -54,7 +54,7 @@ Pellets don't make a flat surface, and a laser bouncing off a pile of them is no
 
 The board keeps its own feeding schedule, so a dead router or a Home Assistant reboot never skips a meal. Home Assistant is for extra feeds, history and alerts. Either way, the board decides *how* to feed, and it keeps score:
 
-![One feed, step by step](/images/blog/aquarium-automation/feed-loop.svg)
+![One feed, step by step](/images/blog/aquarium-automation/feed-loop.svg?v=3)
 
 *Each step lights up in turn, ending with the jam check 12 minutes later. It's armed before the servo moves, so a feed that drops nothing gets caught.*
 
@@ -84,7 +84,7 @@ days left     = feeds left ÷ feeds per day
 
 Until it has enough data, it uses starting guesses taken from a real week of my tank: between 8 and 12 October, 21 feeds took the level from 74 mm to 111 mm, which works out to about **0.97 % per loop cycle** at **5 feeds a day**.
 
-![Food level over five days](/images/blog/aquarium-automation/level-chart.svg)
+![Food level over five days](/images/blog/aquarium-automation/level-chart.svg?v=3)
 
 *The staircase draws itself one feed at a time, then the forecast runs it down to Tank Empty.*
 
@@ -96,7 +96,7 @@ Refills are spotted automatically: a jump of 10 % or more resets the statistics 
 
 The schedule I set is only half the story: I also feed by hand now and then. So the feeder works out the pattern I *actually* follow from the feeds it sees, and shows a *Next Feed* time from that.
 
-![Learning the feeding times](/images/blog/aquarium-automation/schedule.svg)
+![Learning the feeding times](/images/blog/aquarium-automation/schedule.svg?v=3)
 
 *Four days of feeds stack up, five slots emerge, the one-off feed at 12:40 fades out because it never repeats, and the next feed lights up.*
 
@@ -108,7 +108,7 @@ A feeder that jams quietly is worse than no feeder, because you trust it. So 12 
 
 Every 5 minutes it boils everything down to one status, in priority order:
 
-![One status, checked every 5 minutes](/images/blog/aquarium-automation/status.svg)
+![One status, checked every 5 minutes](/images/blog/aquarium-automation/status.svg?v=3)
 
 *An empty hopper hides a jam, and a jam hides an anomaly, so I only ever see the most urgent problem.*
 
@@ -118,7 +118,7 @@ Every 5 minutes it boils everything down to one status, in priority order:
 
 Everything shows up as ordinary entities, so it drops straight into a dashboard and into automations:
 
-![The Home Assistant view](/images/blog/aquarium-automation/dashboard.svg)
+![The Home Assistant view](/images/blog/aquarium-automation/dashboard.svg?v=3)
 
 *A mock-up of the dashboard, with numbers consistent with a learned forecast at loop count 3.*
 
@@ -128,7 +128,7 @@ Statistics, feed history and the loop count are written to flash, at most once e
 
 ## Shop feeder vs Feedback Loop
 
-![Shop-bought timer feeder vs Feedback Loop](/images/blog/aquarium-automation/compare.svg)
+![Shop-bought timer feeder vs Feedback Loop](/images/blog/aquarium-automation/compare.svg?v=3)
 
 *Even with the Wi-Fi down, it keeps up with the shop feeder. The only thing the shop feeder wins on is setup.*
 
