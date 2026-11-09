@@ -1,5 +1,5 @@
 ---
-title: "Ultra-Clear: the fish feeder that learns, forecasts and tattles"
+title: "Feedback Loop: my aquarium automation that learns, forecasts and tattles"
 description: How I turned a NodeMCU, a laser distance sensor and a hobby servo into an aquarium feeder that knows how much food is left, predicts when it runs out, and notices when a feed jams.
 date: 2026-11-09
 tags: [Homelab, Automation, ESPHome, Home Assistant]
@@ -8,7 +8,7 @@ cover: "[[aquarium-automation-cover.jpg]]"
 
 A shop-bought fish feeder is a timer with a drum on it. It turns when the clock says so, and it has no idea whether any food came out, how much is left, or whether the drum has been jammed since Tuesday. You find out when the fish start looking at you funny.
 
-**Ultra-Clear** is my answer to that. It's a small ESPHome controller on the tank that feeds with a servo, measures the food left in the hopper with a laser, learns how fast the food goes, and tells Home Assistant when it will run out or when a feed didn't drop anything. It also keeps an eye on the water temperature while it's there.
+**Feedback Loop** is my answer to that: the automation on my aquarium, named for the feeding and for the control loop that learns from it. It's a small ESPHome controller on the tank that feeds with a servo, measures the food left in the hopper with a laser, learns how fast the food goes, and tells Home Assistant when it will run out or when a feed didn't drop anything. It also keeps an eye on the water temperature while it's there.
 
 > **The short version**
 >
@@ -22,7 +22,7 @@ The whole thing is three parts hanging off a NodeMCU V2, the cheap ESP8266 board
 - **DS18B20 probe.** A waterproof 1-Wire temperature sensor that sits in the tank.
 - **A hobby servo.** It rocks the hopper back and forth to shake a portion of food out.
 
-![How Ultra-Clear is wired](/images/blog/aquarium-automation/system.svg)
+![How the feeder is wired](/images/blog/aquarium-automation/system.svg)
 
 *Sensors in on the left, servo and Home Assistant on the right. All the logic lives on the board.*
 
@@ -32,7 +32,7 @@ The whole thing is three parts hanging off a NodeMCU V2, the cheap ESP8266 board
 | DS18B20 water probe | 1-Wire | D5 | internal pull-up, read every 10 s |
 | Servo (feeder) | PWM | D7 | 50 Hz, 0.5–2.5 ms pulse |
 
-The firmware is ESPHome, talking to Home Assistant over its encrypted API and updated over the air. If the Wi-Fi ever disappears, it falls back to its own hotspot with a captive portal so I can still get in.
+The firmware is ESPHome (the device is called `ultra-clear`, after the tank), talking to Home Assistant over its encrypted API and updated over the air. If the Wi-Fi ever disappears, it falls back to its own hotspot with a captive portal so I can still get in.
 
 ## Measuring food with a laser
 
@@ -44,7 +44,7 @@ Tank Level % = (115 − distance) ÷ 45 × 100     (clamped to 0–100)
 
 ![Inside the hopper](/images/blog/aquarium-automation/hopper.svg)
 
-*The laser measures the gap to the pellets. Less food, longer gap.*
+*Live: the laser pings the pellets every 500 ms, the servo rocks out a portion, and the level and the reading drop with each feed. One feed is exaggerated here so you can see it.*
 
 Pellets don't make a flat surface, and a laser bouncing off a pile of them is noisy. So the reading goes through a small pipeline before it's trusted: raw distance every 500 ms, invalid readings thrown away, a **median of 7** to kill spikes, then a **5-minute average**. Only that final value becomes Tank Level.
 
@@ -56,7 +56,7 @@ Home Assistant decides *when* to feed. The board decides *how*, and it keeps sco
 
 ![One feed, step by step](/images/blog/aquarium-automation/feed-loop.svg)
 
-*The jam check is armed before the servo moves, so a feed that drops nothing gets caught.*
+*Each step lights up in turn, ending with the jam check 12 minutes later. It's armed before the servo moves, so a feed that drops nothing gets caught.*
 
 1. **Triggered.** Home Assistant presses the *Servo Feed Loop* button.
 2. **Arm the jam check.** The board notes the current level and how much this feed *should* use.
@@ -86,7 +86,7 @@ Until it has enough data, it uses starting guesses taken from a real week of my 
 
 ![Food level over five days](/images/blog/aquarium-automation/level-chart.svg)
 
-*Each step is one feed. The forecast extends the staircase to zero.*
+*The staircase draws itself one feed at a time, then the forecast runs it down to Tank Empty.*
 
 It switches to its own numbers once it can trust them: at least 12 cycles and 3 % of food used for the drop rate, and at least two feeds spanning a day for the feeding rate. A *Feed Forecast Source* sensor says which it's using: **Estimated**, **Partly learned** or **Learned**.
 
@@ -98,7 +98,7 @@ Home Assistant runs the schedule, but the feeder works out what that schedule *i
 
 ![Learning the feeding times](/images/blog/aquarium-automation/schedule.svg)
 
-*Five slots emerge from four days of feeds. The one-off feed at 12:40 doesn't repeat, so it's ignored.*
+*Four days of feeds stack up, five slots emerge, the one-off feed at 12:40 fades out because it never repeats, and the next feed lights up.*
 
 It keeps the last 30 feed times, lays the last four days on top of each other, and any feeds that land within 45 minutes of each other on two or more days become a **slot**. The next upcoming slot is the next feed. If there's no pattern yet, it falls back to the median gap between recent feeds.
 
@@ -126,13 +126,13 @@ The full set: raw and averaged distance, Tank Level, Water Temperature, drop per
 
 Statistics, feed history and the loop count are written to flash, at most once every 5 minutes to spare the flash memory. A power cut doesn't wipe what it has learned.
 
-## Shop feeder vs Ultra-Clear
+## Shop feeder vs Feedback Loop
 
-![Shop-bought timer feeder vs Ultra-Clear](/images/blog/aquarium-automation/compare.svg)
+![Shop-bought timer feeder vs Feedback Loop](/images/blog/aquarium-automation/compare.svg)
 
 *Not a clean sweep: the shop feeder still wins when the Wi-Fi is down.*
 
-The honest summary: a timer feeder **does one thing** and does it without Wi-Fi. Ultra-Clear **knows things**: how much food is left, how much each feed uses, when it will run out, when a feed failed, and what the water temperature is. The price is soldering, YAML and an afternoon of calibration.
+The honest summary: a timer feeder **does one thing** and does it without Wi-Fi. Feedback Loop **knows things**: how much food is left, how much each feed uses, when it will run out, when a feed failed, and what the water temperature is. The price is soldering, YAML and an afternoon of calibration.
 
 ## So, is it AI?
 
